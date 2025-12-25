@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: анкета-сайт
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: SECRET_KEY
+        value: ваш_секретный_ключ_для_безопасности
+    disk:
+      name: data
+      mountPath: /tmp
+      sizeGB: 1

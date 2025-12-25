@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 95%; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        h1 { color: #333; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .actions { margin: 20px 0; }
+        .btn { display: inline-block; padding: 10px 20px; color: white;
+               text-decoration: none; border-radius: 5px; margin-right: 10px; font-weight: bold; }
+        .btn-excel { background: #2196F3; }
+        .btn-logout { background: #f44336; }
+        .btn-home { background: #4CAF50; }
+        .stats { background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #4CAF50; color: white; position: sticky; top: 0; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        tr:hover { background: #f1f1f1; }
+        .test-result { max-width: 300px; white-space: pre-wrap; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Панель администратора</h1>
+            <a href="/admin/logout" class="btn btn-logout">🚪 Выйти</a>
+        </div>
+
+        <div class="stats">
+            <strong>📈 Статистика:</strong> Всего анкет: {{ count }}
+        </div>
+
+        <div class="actions">
+            <a href="/admin/download" class="btn btn-excel">⬇ Скачать Excel</a>
+            <a href="/" class="btn btn-home">🏠 На сайт анкеты</a>
+        </div>
+
+        {% if анкеты %}
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Email</th>
+                        <th>Должность</th>
+                        <th>Район</th>
+                        <th>Тест (номера)</th>
+                        <th>Расшифровка теста</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for анкета in анкеты %}
+                    <tr>
+                        <td>{{ анкета[0] }}</td>
+                        <td><strong>{{ анкета[1] }}</strong></td>
+                        <td>{{ анкета[5] }}</td>
+                        <td>{{ анкета[6] }}</td>
+                        <td>{{ анкета[11] }}</td>
+                        <td>{{ анкета[12] }}</td>
+                        <td>{{ анкета[15] }}</td>
+                        <td class="test-result">{{ анкета[16] }}</td>
+                        <td>{{ анкета[17][:10] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>Анкет пока нет</p>
+        {% endif %}
+    </div>
+</body>
+</html>

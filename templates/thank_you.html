@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спасибо!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        p {
+            color: #34495e;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .links {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: block;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="emoji">✅</div>
+        <h1>Анкета успешно отправлена!</h1>
+        <p>Спасибо за ваш интерес к работе в Мосстат.</p>
+        <p>Ваши данные сохранены в нашей базе данных.</p>
+
+        <div class="info">
+            Если вы администратор и хотите просмотреть все анкеты,
+            войдите в панель администратора.
+        </div>
+
+        <div class="links">
+            <a href="/" class="btn">✏ Заполнить еще одну анкету</a>
+            <a href="/admin/login" class="btn btn-admin">🔐 Панель администратора</a>
+        </div>
+    </div>
+</body>
+</html>

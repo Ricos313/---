@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета для работы в Мосстат</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .test-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .test-option {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .test-option input {
+            margin-right: 8px;
+        }
+        .counter {
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Анкета для соискателя</h1>
+
+        <form action="/сохранить" method="POST" onsubmit="return validateForm()">
+
+            <!-- Основные данные -->
+            <div class="section">
+                <h2>Основная информация</h2>
+
+                <div class="form-group">
+                    <label>1. Ваше Ф.И.О:</label>
+                    <input type="text" name="фио" required placeholder="Иванов Иван Иванович">
+                </div>
+
+                <div class="form-group">
+                    <label>2. Дата рождения:</label>
+                    <input type="date" name="дата_рождения" required>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Полных лет:</label>
+                    <input type="number" name="возраст" min="18" max="80" required>
+                </div>
+
+                <div class="form-group">
+                    <label>4. Ваш пол:</label>
+                    <select name="пол" required>
+                        <option value="">Выберите</option>
+                        <option value="Мужской">Мужской</option>
+                        <option value="Женский">Женский</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>5. Номер телефона:</label>
+                    <input type="tel" name="телефон" required placeholder="+7 (999) 123-45-67">
+                </div>
+
+                <div class="form-group">
+                    <label>6. E-mail:</label>
+                    <input type="email" name="email" required placeholder="example@mail.ru">
+                </div>
+            </div>
+
+            <!-- Образование и опыт -->
+            <div class="section">
+                <h2>Образование и опыт</h2>
+
+                <div class="form-group">
+                    <label>7. Гражданство РФ:</label>
+                    <select name="гражданство" required>
+                        <option value="">Выберите</option>
+                        <option value="Да">Да</option>
+                        <option value="Нет">Нет</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>8. Образование:</label>
+                    <select name="образование" required>
+                        <option value="">Выберите</option>
+                        <option value="Среднее общее">Среднее общее</option>
+                        <option value="Среднее профессиональное">Среднее профессиональное</option>
+                        <option value="Неполное высшее">Неполное высшее</option>
+                        <option value="Высшее (бакалавр)">Высшее (бакалавр)</option>
+                        <option value="Высшее (специалист)">Высшее (специалист)</option>
+                        <option value="Высшее (магистр)">Высшее (магистр)</option>
+                        <option value="Кандидат наук">Кандидат наук</option>
+                        <option value="Доктор наук">Доктор наук</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>9. Участие в переписях/обследованиях:</label>
+                    <select name="опыт_переписей" id="опыт" onchange="toggleDetails()">
+                        <option value="">Выберите</option>
+                        <option value="Да">Да</option>
+                        <option value="Нет">Нет</option>
+                    </select>
+                    <div id="детали" style="display:none; margin-top:10px;">
+                        <label>Укажите каких:</label>
+                        <input type="text" name="подробности_опыта" placeholder="Например: Перепись населения 2020">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>10. Желаемая должность:</label>
+                    <select name="желаемая_должность" required>
+                        <option value="">Выберите</option>
+                        <option value="Статистик">Статистик</option>
+                        <option value="Аналитик данных">Аналитик данных</option>
+                        <option value="Специалист по опросам">Специалист по опросам</option>
+                        <option value="Интервьюер">Интервьюер</option>
+                        <option value="Руководитель группы">Руководитель группы</option>
+                        <option value="Контролер">Контролер</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Предпочтения -->
+            <div class="section">
+                <h2>Рабочие предпочтения</h2>
+
+                <div class="form-group">
+                    <label>11. Предпочтительный район работы в Москве:</label>
+                    <input type="text" name="район_работы" required placeholder="Например: ЦАО, ЗАО, СВАО или конкретный район">
+                </div>
+
+                <div class="form-group">
+                    <label>12. Знакомы с проектами Мосстат?</label>
+                    <select name="знакомство_с_проектами" required>
+                        <option value="">Выберите</option>
+                        <option value="Да">Да, знаком(а)</option>
+                        <option value="Нет">Нет, не знаком(а)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>13. Почему выбрали нашу организацию и что ожидаете от работы:</label>
+                    <textarea name="мотивация" rows="4" required placeholder="Опишите вашу мотивацию..."></textarea>
+                </div>
+            </div>
+
+            <!-- Психологический тест -->
+            <div class="section">
+                <h2>🎭 Психологический тест</h2>
+
+                <!-- КАРТИНКА ТЕСТА (ЛОКАЛЬНАЯ) -->
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="{{ url_for('static', filename='images/test_image.jpg') }}"
+                         alt="Рабочее место для теста"
+                         style="max-width: 100%; height: auto; max-height: 400px; border-radius: 10px; border: 1px solid #ddd; padding: 5px; background: white;">
+                    <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                        <em>Что вы бы добавили к этой картине рабочего места?</em>
+                    </p>
+                </div>
+
+                <p><strong>Выберите 3-5 вариантов:</strong></p>
+
+                <div class="counter" id="счетчик">Выбрано: 0 из 5</div>
+                <div class="error" id="ошибка">Пожалуйста, выберите от 3 до 5 вариантов</div>
+
+                <div class="test-options">
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="1" onchange="updateCounter()">
+                        1. Полка с книгами (статистика, управление проектами)
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="2" onchange="updateCounter()">
+                        2. Планшет-график для отметки задач
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="3" onchange="updateCounter()">
+                        3. Растения на подоконнике и цветок в офисе
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="4" onchange="updateCounter()">
+                        4. Шумоподавляющие наушники
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="5" onchange="updateCounter()">
+                        5. Рамка с семейной фотографией
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="6" onchange="updateCounter()">
+                        6. Белая доска с расписанием проектов
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="7" onchange="updateCounter()">
+                        7. Чашка со сладостями для всех
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="8" onchange="updateCounter()">
+                        8. Перегородка между столами
+                    </label>
+
+                    <label class="test-option">
+                        <input type="checkbox" name="психологический_тест" value="9" onchange="updateCounter()">
+                        9. Кубик Рубика или логическая игрушка
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">📤 Отправить анкету</button>
+        </form>
+
+        <!-- Ссылка на админку удалена для безопасности -->
+        <!-- Администратор может войти по адресу: /admin/login -->
+    </div>
+
+    <script>
+        function toggleDetails() {
+            const опыт = document.getElementById('опыт');
+            const детали = document.getElementById('детали');
+            детали.style.display = опыт.value === 'Да' ? 'block' : 'none';
+        }
+
+        function updateCounter() {
+            const checkboxes = document.querySelectorAll('input[name="психологический_тест"]:checked');
+            const счетчик = document.getElementById('счетчик');
+            счетчик.textContent = `Выбрано: ${checkboxes.length} из 5`;
+
+            // Ограничиваем 5 вариантами
+            if (checkboxes.length > 5) {
+                event.target.checked = false;
+                updateCounter();
+                alert('Можно выбрать не более 5 вариантов');
+            }
+        }
+
+        function validateForm() {
+            const checkboxes = document.querySelectorAll('input[name="психологический_тест"]:checked');
+            const ошибка = document.getElementById('ошибка');
+
+            if (checkboxes.length < 3 || checkboxes.length > 5) {
+                ошибка.style.display = 'block';
+                ошибка.scrollIntoView({behavior: 'smooth'});
+                return false;
+            }
+
+            ошибка.style.display = 'none';
+            return true;
+        }
+    </script>
+</body>
+</html>
