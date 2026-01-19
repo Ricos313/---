@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, send_file, session
 import sqlite3
 import openpyxl
-from datetime import datetime
+from datetime import datetime, date
 import hashlib
 from pathlib import Path
 
@@ -64,6 +64,24 @@ def init_db():
     conn.close()
 
 
+# Функция для вычисления возраста по дате рождения
+def calculate_age(birth_date_str):
+    try:
+        birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
+        today = date.today()
+
+        # Вычисляем возраст
+        age = today.year - birth_date.year
+
+        # Проверяем, был ли уже день рождения в этом году
+        if (today.month, today.day) < (birth_date.month, birth_date.day):
+            age -= 1
+
+        return age
+    except:
+        return None
+
+
 # Инициализация при старте
 init_db()
 
@@ -79,7 +97,6 @@ def сохранить():
     данные = {
         'фио': request.form['фио'],
         'дата_рождения': request.form['дата_рождения'],
-        'возраст': request.form['возраст'],
         'пол': request.form['пол'],
         'телефон': request.form['телефон'],
         'email': request.form['email'],
@@ -89,9 +106,12 @@ def сохранить():
         'подробности_опыта': request.form.get('подробности_опыта', ''),
         'желаемая_должность': request.form['желаемая_должность'],
         'район_работы': request.form['район_работы'],
-        'знакомство_с_проектами': request.form['знакомство_с_проектами'],
+        'знакомство_с_проектами': request.form.get('знакомство_с_проектами', ''),
         'мотивация': request.form['мотивация']
     }
+
+    # Вычисляем возраст из даты рождения
+    возраст = calculate_age(данные['дата_рождения'])
 
     # Психологический тест
     выбранные_варианты = request.form.getlist('психологический_тест')
@@ -125,7 +145,7 @@ def сохранить():
          психологический_тест, расшифровка_теста)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', (
-        данные['фио'], данные['дата_рождения'], данные['возраст'],
+        данные['фио'], данные['дата_рождения'], возраст,
         данные['пол'], данные['телефон'], данные['email'],
         данные['гражданство'], данные['образование'], данные['опыт_переписей'],
         данные['подробности_опыта'], данные['желаемая_должность'],
